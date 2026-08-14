@@ -11,10 +11,11 @@
 print_help() {
     echo "Usage: $0 [mode]"
     echo "Available modes:"
-    echo "  dev   -   all service in docker with permissive CORS (Default value)"
-    echo "  prod  -   all service in docker with strict CORS , not useable with ng serve"
-    echo "  java  -   run the Java application directly, using docker for other services , permissive CORS"
-    echo "  light -   run only the essential services in docker, without test modules (Kafka,Modbus dummy devices and ext app) permissive CORS"
+    echo "  dev      -   all service in docker with permissive CORS (Default value)"
+    echo "  prod     -   all service in docker with strict CORS , not useable with ng serve"
+    echo "  java     -   run the Java application directly, using docker for other services , permissive CORS"
+    echo "  light    -   run only the essential services in docker, without test modules (Kafka,Modbus dummy devices and ext app) permissive CORS"
+    echo "  codeflow -   same as dev, but using web-ui-codeflow.json web-ui config and the keycloak-codeflow realm import folder"
 }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -33,10 +34,19 @@ cd "$SCRIPT_DIR" || exit 1
 
 
     cd ../config
-    #create a directory to store the current configuration 
+
+    # Keycloak realm import folder : codeflow mode uses its own realm configuration
+    if [ "$MODE" = "codeflow" ]; then
+        KEYCLOAK_IMPORT_DIR=keycloak-codeflow
+    else
+        KEYCLOAK_IMPORT_DIR=keycloak
+    fi
+
+    #create a directory to store the current configuration
     # so that the docker container can run with the same permissions
     echo USER_ID="$(id -u)" > .env
     echo USER_GID="$(id -g)" >> .env
+    echo KEYCLOAK_IMPORT_DIR="$KEYCLOAK_IMPORT_DIR" >> .env
     cat .env
 
 
@@ -56,6 +66,12 @@ cd "$SCRIPT_DIR" || exit 1
             ;;
         dev)
             echo "Dev mode: Using permissive cors for development mode"
+            sed "s/\${MY_DOCKER_HOST}/$MY_DOCKER_HOST/g" ./web-ui/nginx-dev.conf.template > ./web-ui/nginx.conf
+            docker compose up -d
+            ;;
+        codeflow)
+            echo "Codeflow mode: Same as dev mode, using web-ui-codeflow.json config and keycloak-codeflow realm import"
+            cp web-ui/ui-config/web-ui-codeflow.json web-ui/ui-config/web-ui.json
             sed "s/\${MY_DOCKER_HOST}/$MY_DOCKER_HOST/g" ./web-ui/nginx-dev.conf.template > ./web-ui/nginx.conf
             docker compose up -d
             ;;

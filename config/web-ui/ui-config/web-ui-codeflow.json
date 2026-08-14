@@ -1,0 +1,188 @@
+{
+  "environmentName": "DOCKER CodeFlow",
+  "environmentColor": "blue",
+  "checkIfUrlIsLocked": false,
+  "showUserEntitiesOnTopRightOfTheScreen": true,
+  "externalDevicesEnabled": true,
+  "heartbeatSendingInterval": 30,
+  "processStatesAlwaysLoaded": ["defaultProcess.dataQualityState"],
+  "defaultEntryPage": "feed",
+  "dateRangePickerConfig":"default",
+  "activityArea" : {
+        "selectActivityAreaOnLogin": false,
+        "hideConnectedUsers" : true
+  },
+  "alerts": {
+    "alarmLevelAutoClose": false,
+    "messageOnBottomOfTheScreen": false,
+    "doNotAlertForHiddenCardReceived": false
+  },
+  "archive": {
+    "filters": {
+      "hidePublisherAndRecipientsFields": false,
+      "page": {
+        "size": [
+          "10"
+        ]
+      },
+      "tags": {
+        "list": [
+          {
+            "label": "Label for tag 1",
+            "value": "tag1"
+          },
+          {
+            "label": "Label for tag 2",
+            "value": "tag2"
+          }
+        ]
+      }
+    }
+  },
+  "logging": {
+    "filters": {
+      "tags": {
+        "list": [
+          {
+            "label": "Label for tag 1",
+            "value": "tag1"
+          }
+        ]
+      }
+    }
+  },
+  "feed": {
+    "defaultSorting": "unread",
+    "defaultAcknowledgmentFilter": "notack",
+    "showSearchFilter": false,
+    "card": {
+      "hideTimeFilter": false,
+      "time": {
+        "display": "BUSINESS"
+      },
+      "hideResponseFilter": false,
+      "hideProcessFilter": false,
+      "hideStateFilter": false,
+      "hideApplyFiltersToTimeLineChoice": false,
+      "secondsBeforeLttdForClockDisplay": 3700,
+      "hideAckAllCardsFeature": false,
+      "titleUpperCase": true
+    },
+    "timeline": {
+      "domains": [
+        "RT",
+        "D",
+        "7D",
+        "W",
+        "M",
+        "Y"
+      ]
+    },
+    "geomap": {
+      "enableMap": false,
+      "colorMode":"uiTheme",
+      "mapProjection": "EPSG:3857",
+      "defaultDataProjection": "EPSG:4326",
+      "initialLongitude": 5.3255,
+      "initialLatitude": 52.1845,
+      "initialZoom": 6,
+      "zoomLevelWhenZoomToLocation": 14,
+      "maxZoom": 11,
+      "zoomDuration": 500,
+      "highlightPolygonStrokeWidth": 5,
+      "layers": [
+                {
+                    "type":"osm",
+                    "opacity": 1.0,
+                    "zIndex": 0
+                },
+                {
+                    "type":"wmts",
+                    "capabilitiesUrl":"https://data.geopf.fr/annexes/ressources/wmts/essentiels.xml",
+                    "layer":"CADASTRALPARCELS.PARCELLAIRE_EXPRESS",
+                    "matrixSet":"PM_0_19",
+                    "opacity": 0.7,
+                    "zIndex": 1
+                },
+                {
+                    "type": "geojson",
+                    "url": "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/lignes-electriques-htb-strasbourg/exports/geojson",
+                    "style": {
+                        "stroke-color": "red"
+                    },
+                    "opacity": 0.8,
+                    "zIndex": 2
+                },
+                {
+                    "type": "geojson",
+                    "url": "assets/layers/geojson-layer2.json",
+                    "opacity": 0.6,
+                    "zIndex": 3
+                }
+
+            ]
+
+    },
+    "enableGroupedCards": false
+  },
+  "i18n": {
+    "supported": {
+      "locales": [
+        "en",
+        "fr",
+        "nl"
+      ]
+    }
+  },
+  "security": {
+    "jwt": {
+      "login-claim": "preferred_username"
+    },
+    "oauth2": {
+      "client-id": "opfab-client-ui",
+      "useSilentRefresh" : false,
+      "flow": {
+        "delegate-url": "http://localhost:89/auth/realms/dev",
+        "mode": "CODE",
+        "provider": "Opfab Keycloak"
+      }
+    },
+    "changePasswordUrl": "http://localhost:89/auth/realms/dev/account/#/account-security/signing-in"
+  },
+  "settings": {
+    "locale": "en",
+    "dateTimeFormat": "HH:mm dd/MM/yyyy",
+    "dateFormat": "dd/MM/yyyy",
+    "styleWhenNightDayModeDesactivated": "NIGHT",
+    "replayInterval": 10,
+    "replayEnabled": true,
+    "getEmailFromUserInsteadOfSettings": false
+  },
+  "settingsScreen": {
+    "hiddenSettings": []
+  },
+  "about": {
+    "firstapplication": {
+      "name": "First application",
+      "rank": 1,
+      "version": "v12.34.56"
+    },
+    "keycloak": {
+      "name": "Keycloak",
+      "rank": 2,
+      "version": "6.0.1"
+    },
+    "lastapplication": {
+      "name": "Wonderful Solution",
+      "version": "0.1.2-RELEASE"
+    }
+  },
+  "usercard": {
+    "useDescriptionFieldForEntityList": false
+  },
+  "customCssToLoad": ["http://localhost:2002/externalCss/externalStyle.css"],
+  "customJsToLoad": ["http://localhost:2002/externalJs/handlebarsExample.js",
+        "http://localhost:2002/externalJs/loadTags.js",
+        "http://localhost:2002/externalJs/CardListExample.js",
+        "http://localhost:2002/externalJs/DashboardExample.js"]
+}
