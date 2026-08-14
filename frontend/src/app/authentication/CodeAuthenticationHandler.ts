@@ -26,10 +26,22 @@ export class CodeAuthenticationHandler extends AuthHandler {
     public async initializeAuthentication() {
         const authConfig: AuthConfig = {
             issuer: this.delegateUrl,
-            redirectUri: location.href,
+            // Must be a fixed URI (origin + pathname only), NOT `location.href`.
+            // On the callback page load, `location.href` contains the query params added by the auth
+            // server (state, session_state, code, iss...), so using it here would make the redirect_uri
+            // sent at token-exchange time differ from the one sent in the initial authorization request.
+            // The auth server (e.g. Keycloak) requires these two to match exactly (RFC 6749 §4.1.3),
+            // otherwise the token exchange fails with "invalid_grant: Incorrect redirect_uri".
+            redirectUri: `${location.origin}${location.pathname}`,
             silentRefreshRedirectUri: `${location.origin}${location.pathname}silent-refresh.html`,
             clientId: this.clientId,
             scope: 'openid profile email',
+            // Must be set explicitly: angular-oauth2-oidc's createLoginUrl() only uses 'code' when
+            // config.responseType is provided; otherwise it falls back to 'id_token token' (implicit),
+            // even when initCodeFlow() is the method being called. Without this, the authorization
+            // request is implicit-shaped (no PKCE code_challenge) and fails as soon as the Implicit
+            // flow is disabled on the auth server client.
+            responseType: 'code',
             showDebugInformation: false,
             sessionChecksEnabled: false,
             clearHashAfterLogin: false,
