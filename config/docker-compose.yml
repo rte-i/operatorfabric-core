@@ -44,7 +44,7 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_HTTP_RELATIVE_PATH=/auth
     volumes:
-      - ./keycloak:/opt/keycloak/data/import
+      - ./${KEYCLOAK_IMPORT_DIR:-keycloak}:/opt/keycloak/data/import
     command:
       - -v
       - start-dev
