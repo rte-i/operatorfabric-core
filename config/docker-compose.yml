@@ -143,7 +143,7 @@ services:
       - "./services/cards-consultation.yml:/config/application.yml"
   web-ui:
     container_name: web-ui
-    image: "lfeoperatorfabric/of-web-ui:4.13.0.RELEASE"
+    image: "lfeoperatorfabric/of-web-ui:4.13.1-SNAPSHOT"
     ports:
       - "2002:80"
         # To avoid resolving hostname in docker network for nginx
