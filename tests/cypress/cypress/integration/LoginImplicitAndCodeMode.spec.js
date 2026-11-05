@@ -40,6 +40,8 @@ describe('Login with implicit or code flow ', () => {
     it('login with oauth2 code flow', () => {
         script.setPropertyInConf('security.oauth2.flow.mode', '\\"CODE\\"');
         script.setPropertyInConf('security.oauth2.flow.delegate-url', '\\"http://localhost:2002/auth/realms/dev\\"');
+        // Code flow needs a public client (PKCE, no client secret in the browser): opfab-client is confidential
+        script.setPropertyInConf('security.oauth2.client-id', '\\"opfab-client-ui\\"');
         //go to login page
         cy.visit('/');
         cy.get('#username').type(username);
