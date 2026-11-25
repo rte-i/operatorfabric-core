@@ -73,7 +73,10 @@ task runHeadlessTests(type: NpmTask) {
 
 task buildDocker(type: Exec) {
     workingDir project.projectDir
-    commandLine 'docker', 'build', '--build-arg', "https_proxy=${proxy.https}",'-t', "lfeoperatorfabric/of-web-ui:${project.version}", '.'
+    // WEBUI_* build arguments are taken from the environment only when set (see Dockerfile)
+    commandLine 'docker', 'build', '--build-arg', "https_proxy=${proxy.https}",
+                '--build-arg', 'WEBUI_NGINX_BASE_IMAGE', '--build-arg', 'WEBUI_RUNTIME_USER', '--build-arg', 'WEBUI_APK_PACKAGES',
+                '-t', "lfeoperatorfabric/of-web-ui:${project.version}", '.'
 }
 
 build.dependsOn(runHeadlessTests)
